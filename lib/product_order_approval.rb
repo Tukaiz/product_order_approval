@@ -8,8 +8,8 @@ module ProductOrderApproval
       [
          {
           can: true,
-          callback_name: 'can_manage_order_holds',
-          name: 'Can Manage Order Approvals'
+          callback_name: 'can_manage_product_order_holds',
+          name: 'Can Manage Product Order Approvals'
          }
       ]
     end
@@ -18,7 +18,7 @@ module ProductOrderApproval
   module Authorization
     module Permissions
 
-      def can_manage_order_holds
+      def can_manage_product_order_holds
         can :manage, OrderHold
       end
 
