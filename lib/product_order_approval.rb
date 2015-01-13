@@ -19,6 +19,9 @@ module ProductOrderApproval
     module Permissions
 
       def can_manage_product_order_holds
+        ## Can view the approvals section
+        can :view_order_approval_section, Order
+
         can :manage, OrderHold
       end
 
