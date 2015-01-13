@@ -19,8 +19,13 @@ module ProductOrderApproval
     module Permissions
 
       def can_manage_product_order_holds
+        UserEditContext.call(@user, @site)
+        ids = @user.full_claims.pluck(:id)
         ## Can view the approvals section
         can :view_order_approval_section, Order
+
+        ## Can read any order for which there is at least 1 order_hold that needs approval
+        can :read, Order, id: Order.for_approvals(ids).pluck(:id)
 
         can :manage, OrderHold
       end
