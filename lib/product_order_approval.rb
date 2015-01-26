@@ -10,13 +10,22 @@ module ProductOrderApproval
           can: true,
           callback_name: 'can_manage_product_order_holds',
           name: 'Can Manage Product Order Approvals'
-         }
+         },
+        {
+          can: true,
+          callback_name: 'can_bypass_order_approvals',
+          name: 'Can bypass Order Approvals'
+        }
       ]
     end
   end
 
   module Authorization
     module Permissions
+
+      def can_bypass_order_approvals
+        can :bypass_order_approvals, Order
+      end
 
       def can_manage_product_order_holds
         UserEditContext.call(@user, @site)
