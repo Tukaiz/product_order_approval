@@ -28,8 +28,7 @@ module ProductOrderApproval
       end
 
       def can_manage_product_order_holds
-        UserEditContext.call(@user, @site)
-        ids = @user.full_claims.pluck(:id)
+        ids = @user.claims.for_site(@site).pluck(:id)
         ## Can view the approvals section
         can :view_order_approval_section, Order
 
