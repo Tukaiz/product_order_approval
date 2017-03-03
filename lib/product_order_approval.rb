@@ -15,6 +15,11 @@ module ProductOrderApproval
           can: true,
           callback_name: 'can_bypass_order_approvals',
           name: 'Can bypass Order Approvals'
+        },
+        {
+          can: true,
+          callback_name: 'can_read_order-hold',
+          name: 'Can View/Read All Order Holds'
         }
       ]
     end
@@ -28,14 +33,16 @@ module ProductOrderApproval
       end
 
       def can_manage_product_order_holds
-        ids = @user.claims.for_site(@site).pluck(:id)
+        claim_ids = @user.claims.for_site(@site).pluck(:id)
+
         ## Can view the approvals section
         can :view_order_approval_section, Order
 
         ## Can read any order for which there is at least 1 order_hold that needs approval
-        can :read, Order, id: Order.for_approvals(ids).pluck(:id)
+        can :read, Order, id: Order.for_approvals(claim_ids).pluck(:id)
 
-        can :manage, OrderHold
+        # Can only manage order_holds attached to
+        can :manage, OrderHold, claim_id: claim_ids
       end
 
     end
